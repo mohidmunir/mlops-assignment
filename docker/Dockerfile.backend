@@ -1,0 +1,22 @@
+# Use Python base image
+FROM python:3.10-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy backend source code
+COPY ./backend /app
+
+# Copy pre-downloaded Python packages
+COPY ./backend/downloaded_packages /app/downloaded_packages
+
+# Install dependencies from local files (no internet needed)
+RUN pip install --upgrade pip && \
+    pip install --find-links=downloaded_packages -r requirements.txt
+
+
+# Expose the backend port
+EXPOSE 5000
+
+# Start the Flask app
+CMD ["python", "run.py"]
